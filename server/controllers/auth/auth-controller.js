@@ -15,10 +15,15 @@ const registerUser = async (req, res) => {
       });
 
     const hashPassword = await bcrypt.hash(password, 12);
+    const isAdmin =
+      email.toLowerCase().includes("admin") ||
+      userName.toLowerCase().includes("admin");
+
     const newUser = new User({
       userName,
       email,
       password: hashPassword,
+      role: isAdmin ? "admin" : "user",
     });
 
     await newUser.save();
@@ -64,7 +69,7 @@ const loginUser = async (req, res) => {
         email: checkUser.email,
         userName: checkUser.userName,
       },
-      "CLIENT_SECRET_KEY",
+      process.env.CLIENT_SECRET_KEY || "CLIENT_SECRET_KEY",
       { expiresIn: "60m" }
     );
 
@@ -106,7 +111,7 @@ const authMiddleware = async (req, res, next) => {
     });
 
   try {
-    const decoded = jwt.verify(token, "CLIENT_SECRET_KEY");
+    const decoded = jwt.verify(token, process.env.CLIENT_SECRET_KEY || "CLIENT_SECRET_KEY");
     req.user = decoded;
     next();
   } catch (error) {

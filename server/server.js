@@ -1,7 +1,9 @@
+require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const connectDB = require("./config/db");
+
 const authRouter = require("./routes/auth/auth-routes");
 const adminProductsRouter = require("./routes/admin/products-routes");
 const adminOrderRouter = require("./routes/admin/order-routes");
@@ -14,46 +16,58 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
-
-//create a database connection -> u can also
-//create a separate file for this and then import/use that file here
-
-mongoose
-  .connect("db_url")
-  .then(() => console.log("MongoDB connected"))
-  .catch((error) => console.log(error));
+const uploadRouter = require("./routes/common/upload-routes");
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "DELETE", "PUT"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Expires",
-      "Pragma",
-    ],
-    credentials: true,
-  })
-);
+const startServer = async () => {
+  try {
+    // 1. Wait for database connection first
+    await connectDB();
 
-app.use(cookieParser());
-app.use(express.json());
-app.use("/api/auth", authRouter);
-app.use("/api/admin/products", adminProductsRouter);
-app.use("/api/admin/orders", adminOrderRouter);
+    // 2. Middlewares
+    app.use(
+      cors({
+        origin: process.env.CLIENT_URL || "http://localhost:5173",
+        methods: ["GET", "POST", "DELETE", "PUT"],
+        allowedHeaders: [
+          "Content-Type",
+          "Authorization",
+          "Cache-Control",
+          "Expires",
+          "Pragma",
+        ],
+        credentials: true,
+      })
+    );
 
-app.use("/api/shop/products", shopProductsRouter);
-app.use("/api/shop/cart", shopCartRouter);
-app.use("/api/shop/address", shopAddressRouter);
-app.use("/api/shop/order", shopOrderRouter);
-app.use("/api/shop/search", shopSearchRouter);
-app.use("/api/shop/review", shopReviewRouter);
+    app.use(cookieParser());
+    app.use(express.json());
 
-app.use("/api/common/feature", commonFeatureRouter);
+    // 3. API Routes
+    app.use("/api/auth", authRouter);
+    app.use("/api/admin/products", adminProductsRouter);
+    app.use("/api/admin/orders", adminOrderRouter);
 
-app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
+    app.use("/api/shop/products", shopProductsRouter);
+    app.use("/api/shop/cart", shopCartRouter);
+    app.use("/api/shop/address", shopAddressRouter);
+    app.use("/api/shop/order", shopOrderRouter);
+    app.use("/api/shop/search", shopSearchRouter);
+    app.use("/api/shop/review", shopReviewRouter);
+
+    app.use("/api/common/feature", commonFeatureRouter);
+    app.use("/api/upload", uploadRouter);
+
+    // 4. Start listening on PORT 5000
+    app.listen(PORT, () =>
+      console.log(`🚀 Batik E-Commerce Server is now running on port ${PORT}`)
+    );
+  } catch (error) {
+    console.error("Failed to start server:", error);
+  }
+};
+
+startServer();
+
