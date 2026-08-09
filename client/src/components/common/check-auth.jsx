@@ -7,7 +7,7 @@ function CheckAuth({ isAuthenticated, user, children }) {
 
   if (location.pathname === "/") {
     if (!isAuthenticated) {
-      return <Navigate to="/auth/login" />;
+      return <Navigate to="/shop/home" />;
     } else {
       if (user?.role === "admin") {
         return <Navigate to="/admin/dashboard" />;
@@ -17,13 +17,17 @@ function CheckAuth({ isAuthenticated, user, children }) {
     }
   }
 
-  if (
-    !isAuthenticated &&
-    !(
-      location.pathname.includes("/login") ||
-      location.pathname.includes("/register")
-    )
-  ) {
+  const allowedUnauthPaths = [
+    "/login",
+    "/register",
+    "/shop/home",
+    "/shop/listing",
+    "/shop/search"
+  ];
+
+  const isAllowedUnauth = allowedUnauthPaths.some(path => location.pathname.includes(path));
+
+  if (!isAuthenticated && !isAllowedUnauth) {
     return <Navigate to="/auth/login" />;
   }
 
