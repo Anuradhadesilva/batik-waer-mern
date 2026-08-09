@@ -3,19 +3,8 @@ import bannerOne from "../../assets/banner-1.webp";
 import bannerTwo from "../../assets/banner-2.webp";
 import bannerThree from "../../assets/banner-3.webp";
 import {
-  Airplay,
-  BabyIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  CloudLightning,
-  Heater,
-  Images,
-  Shirt,
-  ShirtIcon,
-  ShoppingBasket,
-  UmbrellaIcon,
-  WashingMachine,
-  WatchIcon,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
@@ -31,21 +20,12 @@ import { useToast } from "@/components/ui/use-toast";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { getFeatureImages } from "@/store/common-slice";
 
-const categoriesWithIcon = [
-  { id: "men", label: "Men", icon: ShirtIcon },
-  { id: "women", label: "Women", icon: CloudLightning },
-  { id: "kids", label: "Kids", icon: BabyIcon },
-  { id: "accessories", label: "Accessories", icon: WatchIcon },
-  { id: "footwear", label: "Footwear", icon: UmbrellaIcon },
-];
-
-const brandsWithIcon = [
-  { id: "nike", label: "Nike", icon: Shirt },
-  { id: "adidas", label: "Adidas", icon: WashingMachine },
-  { id: "puma", label: "Puma", icon: ShoppingBasket },
-  { id: "levi", label: "Levi's", icon: Airplay },
-  { id: "zara", label: "Zara", icon: Images },
-  { id: "h&m", label: "H&M", icon: Heater },
+const categoriesWithImage = [
+  { id: "men", label: "Men's Collection", image: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=500&q=80" },
+  { id: "women", label: "Women's Elegance", image: "https://images.unsplash.com/photo-1583391733958-d15ce69c8c19?w=500&q=80" },
+  { id: "kids", label: "Kids", image: "https://images.unsplash.com/photo-1519689680058-324335c77eba?w=500&q=80" },
+  { id: "accessories", label: "Accessories", image: "https://images.unsplash.com/photo-1584308972271-2b63489865ac?w=500&q=80" },
+  { id: "footwear", label: "Footwear", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&q=80" },
 ];
 function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -131,16 +111,27 @@ function ShoppingHome() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="relative w-full h-[600px] overflow-hidden">
+      <div className="relative w-full h-[700px] overflow-hidden">
         {featureImageList && featureImageList.length > 0
           ? featureImageList.map((slide, index) => (
-              <img
-                src={slide?.image}
+              <div
                 key={index}
                 className={`${
-                  index === currentSlide ? "opacity-100" : "opacity-0"
-                } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
-              />
+                  index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+                } absolute top-0 left-0 w-full h-full transition-opacity duration-1000 ease-in-out`}
+              >
+                <img
+                  src={slide?.image}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                  <div className="text-center text-white p-6 max-w-3xl transform transition-transform duration-1000 scale-105">
+                    <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 tracking-wide drop-shadow-xl text-white">The Art of Heritage</h1>
+                    <p className="text-xl md:text-2xl mb-10 font-light drop-shadow-md text-gray-200">Discover Timeless Sri Lankan Batik</p>
+                    <Button onClick={() => navigate('/shop/listing')} size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-10 py-6 rounded-none uppercase tracking-widest font-semibold transition-all">Explore Collection</Button>
+                  </div>
+                </div>
+              </div>
             ))
           : null}
         <Button
@@ -170,53 +161,60 @@ function ShoppingHome() {
           <ChevronRightIcon className="w-4 h-4" />
         </Button>
       </div>
-      <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">
-            Shop by category
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4 md:px-6">
+          <h2 className="text-4xl font-serif font-bold text-center mb-12 text-foreground tracking-wide">
+            Shop by Category
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {categoriesWithIcon.map((categoryItem) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {categoriesWithImage.map((categoryItem) => (
               <Card
+                key={categoryItem.id}
                 onClick={() =>
                   handleNavigateToListingPage(categoryItem, "category")
                 }
-                className="cursor-pointer hover:shadow-lg transition-shadow"
+                className="cursor-pointer group overflow-hidden rounded-none border-0 shadow-sm hover:shadow-xl transition-all duration-300"
               >
-                <CardContent className="flex flex-col items-center justify-center p-6">
-                  <categoryItem.icon className="w-12 h-12 mb-4 text-primary" />
-                  <span className="font-bold">{categoryItem.label}</span>
-                </CardContent>
+                <div className="relative h-[400px] lg:h-[300px] overflow-hidden">
+                  <img src={categoryItem.image} alt={categoryItem.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 transition-all duration-300"></div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-end p-6">
+                    <span className="font-serif text-2xl font-bold text-white drop-shadow-md">{categoryItem.label}</span>
+                  </div>
+                </div>
               </Card>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Shop by Brand</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {brandsWithIcon.map((brandItem) => (
-              <Card
-                onClick={() => handleNavigateToListingPage(brandItem, "brand")}
-                className="cursor-pointer hover:shadow-lg transition-shadow"
-              >
-                <CardContent className="flex flex-col items-center justify-center p-6">
-                  <brandItem.icon className="w-12 h-12 mb-4 text-primary" />
-                  <span className="font-bold">{brandItem.label}</span>
-                </CardContent>
-              </Card>
-            ))}
+      <section className="py-20 bg-primary text-primary-foreground relative overflow-hidden">
+        <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-12 relative z-10">
+          <div className="md:w-1/2">
+            <div className="relative">
+              <div className="absolute -inset-4 border-2 border-primary-foreground/30 rounded-none z-0"></div>
+              <img src="https://images.unsplash.com/photo-1605814523773-899144365313?w=800&q=80" alt="Batik artisan" className="w-full h-[500px] object-cover relative z-10 shadow-2xl" />
+            </div>
+          </div>
+          <div className="md:w-1/2 max-w-xl">
+            <h4 className="uppercase tracking-widest text-sm mb-4 font-bold text-primary-foreground/80">Our Journey</h4>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6 leading-tight">Handcrafted in Sri Lanka</h2>
+            <p className="text-lg leading-relaxed mb-8 text-primary-foreground/90 font-light">
+              Preserving generations of artisanal skill and vibrant tradition. Each piece is meticulously dyed by hand, creating unique patterns that tell a story of our heritage and culture. Experience the luxury of authentic Sri Lankan Batik.
+            </p>
+            <Button variant="outline" className="text-primary border-primary-foreground bg-primary-foreground hover:bg-transparent hover:text-primary-foreground rounded-none uppercase tracking-widest font-semibold px-8 py-6">Read Our Story</Button>
           </div>
         </div>
       </section>
 
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">
-            Feature Products
-          </h2>
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center text-center mb-12">
+            <h2 className="text-4xl font-serif font-bold text-foreground tracking-wide mb-4">
+              Signature Collection
+            </h2>
+            <p className="text-muted-foreground max-w-2xl text-lg font-light">Explore our most sought-after designs, blending traditional motifs with modern elegance.</p>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {productList && productList.length > 0
               ? productList.map((productItem) => (

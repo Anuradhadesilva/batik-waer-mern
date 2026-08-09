@@ -41,8 +41,12 @@ function AdminDashboard() {
         isCustomStyling={true}
         // isEditMode={currentEditedId !== null}
       />
-      <Button onClick={handleUploadFeatureImage} className="mt-5 w-full">
-        Upload
+      <Button 
+        onClick={handleUploadFeatureImage} 
+        className="mt-5 w-full"
+        disabled={!uploadedImageUrl || uploadedImageUrl === ""}
+      >
+        Upload Feature Image
       </Button>
       <div className="flex flex-col gap-4 mt-5">
         {featureImageList && featureImageList.length > 0
