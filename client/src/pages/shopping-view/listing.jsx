@@ -20,6 +20,7 @@ import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { getGuestId } from "@/lib/utils";
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -85,14 +86,7 @@ function ShoppingListing() {
   }
 
   function handleAddtoCart(getCurrentProductId, getTotalStock) {
-    if (!user?.id) {
-      toast({
-        title: "Please login to add items to cart",
-        variant: "destructive",
-      });
-      navigate("/auth/login");
-      return;
-    }
+    const currentUserId = user?.id || getGuestId();
 
     console.log(cartItems);
     let getCartItems = cartItems?.items || [];
@@ -116,13 +110,13 @@ function ShoppingListing() {
 
     dispatch(
       addToCart({
-        userId: user?.id,
+        userId: currentUserId,
         productId: getCurrentProductId,
         quantity: 1,
       })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
+        dispatch(fetchCartItems(currentUserId));
         toast({
           title: "Product is added to cart",
         });

@@ -25,15 +25,15 @@ export const registerFormControls = [
 export const loginFormControls = [
   {
     name: "email",
-    label: "Email",
-    placeholder: "Enter your email",
+    label: "",
+    placeholder: "Username or email address *Required",
     componentType: "input",
     type: "email",
   },
   {
     name: "password",
-    label: "Password",
-    placeholder: "Enter your password",
+    label: "",
+    placeholder: "Password *Required",
     componentType: "input",
     type: "password",
   },
@@ -58,11 +58,15 @@ export const addProductFormElements = [
     name: "category",
     componentType: "select",
     options: [
-      { id: "men", label: "Men" },
-      { id: "women", label: "Women" },
-      { id: "kids", label: "Kids" },
-      { id: "accessories", label: "Accessories" },
-      { id: "footwear", label: "Footwear" },
+      { id: "cotton-sarees", label: "Cotton Batik Sarees" },
+      { id: "handloom-sarees", label: "Handloom Sarees" },
+      { id: "batik-lungi", label: "Batik Lungi" },
+      { id: "batik-shirt", label: "Batik Shirt" },
+      { id: "batik-tops", label: "Batik Tops" },
+      { id: "batik-sarongs", label: "Batik Sarongs" },
+      { id: "batik-couple-kits", label: "Batik Couple Kits" },
+      { id: "batik-frocks", label: "Batik Frocks" },
+      { id: "wall-art", label: "Wall Art" },
     ],
   },
   {
@@ -104,52 +108,58 @@ export const addProductFormElements = [
 export const shoppingViewHeaderMenuItems = [
   {
     id: "home",
-    label: "Home",
+    label: "HOME",
     path: "/shop/home",
   },
   {
     id: "products",
-    label: "Products",
+    label: "SHOP",
     path: "/shop/listing",
   },
   {
-    id: "men",
-    label: "Men",
+    id: "categories",
+    label: "CATEGORIES",
     path: "/shop/listing",
+    isDropdown: true,
+    children: [
+      { id: "cotton-sarees", label: "Cotton Batik Sarees", path: "/shop/listing" },
+      { id: "handloom-sarees", label: "Handloom Sarees", path: "/shop/listing" },
+      { id: "batik-lungi", label: "Batik Lungi", path: "/shop/listing" },
+      { id: "batik-shirt", label: "Batik Shirt", path: "/shop/listing" },
+      { id: "batik-tops", label: "Batik Tops", path: "/shop/listing" },
+      { id: "batik-sarongs", label: "Batik Sarongs", path: "/shop/listing" },
+      { id: "batik-couple-kits", label: "Batik Couple Kits", path: "/shop/listing" },
+      { id: "batik-frocks", label: "Batik Frocks", path: "/shop/listing" },
+      { id: "wall-art", label: "Wall Art", path: "/shop/listing" },
+    ],
   },
   {
-    id: "women",
-    label: "Women",
-    path: "/shop/listing",
+    id: "pre-order",
+    label: "PRE-ORDER",
+    path: "/shop/pre-order",
   },
   {
-    id: "kids",
-    label: "Kids",
-    path: "/shop/listing",
-  },
-  {
-    id: "footwear",
-    label: "Footwear",
-    path: "/shop/listing",
-  },
-  {
-    id: "accessories",
-    label: "Accessories",
-    path: "/shop/listing",
+    id: "our-story",
+    label: "OUR STORY",
+    path: "/shop/our-story",
   },
   {
     id: "search",
-    label: "Search",
+    label: "SEARCH",
     path: "/shop/search",
   },
 ];
 
 export const categoryOptionsMap = {
-  men: "Men",
-  women: "Women",
-  kids: "Kids",
-  accessories: "Accessories",
-  footwear: "Footwear",
+  "cotton-sarees": "Cotton Batik Sarees",
+  "handloom-sarees": "Handloom Sarees",
+  "batik-lungi": "Batik Lungi",
+  "batik-shirt": "Batik Shirt",
+  "batik-tops": "Batik Tops",
+  "batik-sarongs": "Batik Sarongs",
+  "batik-couple-kits": "Batik Couple Kits",
+  "batik-frocks": "Batik Frocks",
+  "wall-art": "Wall Art",
 };
 
 export const brandOptionsMap = {
@@ -163,11 +173,15 @@ export const brandOptionsMap = {
 
 export const filterOptions = {
   category: [
-    { id: "men", label: "Men" },
-    { id: "women", label: "Women" },
-    { id: "kids", label: "Kids" },
-    { id: "accessories", label: "Accessories" },
-    { id: "footwear", label: "Footwear" },
+    { id: "cotton-sarees", label: "Cotton Batik Sarees" },
+    { id: "handloom-sarees", label: "Handloom Sarees" },
+    { id: "batik-lungi", label: "Batik Lungi" },
+    { id: "batik-shirt", label: "Batik Shirt" },
+    { id: "batik-tops", label: "Batik Tops" },
+    { id: "batik-sarongs", label: "Batik Sarongs" },
+    { id: "batik-couple-kits", label: "Batik Couple Kits" },
+    { id: "batik-frocks", label: "Batik Frocks" },
+    { id: "wall-art", label: "Wall Art" },
   ],
   brand: [
     { id: "nike", label: "Nike" },
@@ -221,4 +235,15 @@ export const addressFormControls = [
     componentType: "textarea",
     placeholder: "Enter any additional notes",
   },
+];
+
+export const guestCheckoutFormControls = [
+  {
+    label: "Email",
+    name: "email",
+    componentType: "input",
+    type: "email",
+    placeholder: "Enter your email address",
+  },
+  ...addressFormControls
 ];

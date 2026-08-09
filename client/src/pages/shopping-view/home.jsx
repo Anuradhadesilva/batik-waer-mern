@@ -19,13 +19,14 @@ import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { useToast } from "@/components/ui/use-toast";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { getFeatureImages } from "@/store/common-slice";
+import { getGuestId } from "@/lib/utils";
 
 const categoriesWithImage = [
-  { id: "men", label: "Men's Collection", image: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=500&q=80" },
-  { id: "women", label: "Women's Elegance", image: "https://images.unsplash.com/photo-1583391733958-d15ce69c8c19?w=500&q=80" },
-  { id: "kids", label: "Kids", image: "https://images.unsplash.com/photo-1519689680058-324335c77eba?w=500&q=80" },
-  { id: "accessories", label: "Accessories", image: "https://images.unsplash.com/photo-1584308972271-2b63489865ac?w=500&q=80" },
-  { id: "footwear", label: "Footwear", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&q=80" },
+  { id: "cotton-sarees", label: "Batik Sarees", image: "https://images.unsplash.com/photo-1583391733958-d15ce69c8c19?w=500&q=80" },
+  { id: "batik-shirt", label: "Batik Shirts", image: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=500&q=80" },
+  { id: "batik-frocks", label: "Batik Frocks", image: "https://images.unsplash.com/photo-1515347619362-d967527b1401?w=500&q=80" },
+  { id: "batik-sarongs", label: "Batik Sarongs", image: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=500&q=80" },
+  { id: "wall-art", label: "Wall Art", image: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=500&q=80" },
 ];
 function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -57,24 +58,17 @@ function ShoppingHome() {
   }
 
   function handleAddtoCart(getCurrentProductId) {
-    if (!user?.id) {
-      toast({
-        title: "Please login to add items to cart",
-        variant: "destructive",
-      });
-      navigate("/auth/login");
-      return;
-    }
+    const currentUserId = user?.id || getGuestId();
 
     dispatch(
       addToCart({
-        userId: user?.id,
+        userId: currentUserId,
         productId: getCurrentProductId,
         quantity: 1,
       })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
+        dispatch(fetchCartItems(currentUserId));
         toast({
           title: "Product is added to cart",
         });
@@ -193,7 +187,7 @@ function ShoppingHome() {
           <div className="md:w-1/2">
             <div className="relative">
               <div className="absolute -inset-4 border-2 border-primary-foreground/30 rounded-none z-0"></div>
-              <img src="https://images.unsplash.com/photo-1605814523773-899144365313?w=800&q=80" alt="Batik artisan" className="w-full h-[500px] object-cover relative z-10 shadow-2xl" />
+              <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&q=80" alt="Batik artisan" className="w-full h-[500px] object-cover relative z-10 shadow-2xl" />
             </div>
           </div>
           <div className="md:w-1/2 max-w-xl">

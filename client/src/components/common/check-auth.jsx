@@ -22,7 +22,12 @@ function CheckAuth({ isAuthenticated, user, children }) {
     "/register",
     "/shop/home",
     "/shop/listing",
-    "/shop/search"
+    "/shop/search",
+    "/shop/pre-order",
+    "/shop/our-story",
+    "/shop/checkout",
+    "/shop/paypal-return",
+    "/shop/payment-success"
   ];
 
   const isAllowedUnauth = allowedUnauthPaths.some(path => location.pathname.includes(path));

@@ -17,6 +17,7 @@ function CommonForm({
   onSubmit,
   buttonText,
   isBtnDisabled,
+  children,
 }) {
   function renderInputsByComponentType(getControlItem) {
     let element = null;
@@ -113,12 +114,13 @@ function CommonForm({
       <div className="flex flex-col gap-3">
         {formControls.map((controlItem) => (
           <div className="grid w-full gap-1.5" key={controlItem.name}>
-            <Label className="mb-1">{controlItem.label}</Label>
+            {controlItem.label && <Label className="mb-1">{controlItem.label}</Label>}
             {renderInputsByComponentType(controlItem)}
           </div>
         ))}
       </div>
-      <Button disabled={isBtnDisabled} type="submit" className="mt-2 w-full">
+      {children}
+      <Button disabled={isBtnDisabled} type="submit" className="mt-2 w-full rounded-none h-12 bg-black text-white hover:bg-gray-800 text-md font-bold">
         {buttonText || "Submit"}
       </Button>
     </form>

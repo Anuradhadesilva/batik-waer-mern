@@ -13,6 +13,7 @@ import StarRatingComponent from "../common/star-rating";
 import { useEffect, useState } from "react";
 import { addReview, getReviews } from "@/store/shop/review-slice";
 import { useNavigate } from "react-router-dom";
+import { getGuestId } from "@/lib/utils";
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const [reviewMsg, setReviewMsg] = useState("");
@@ -31,15 +32,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
   }
 
   function handleAddToCart(getCurrentProductId, getTotalStock) {
-    if (!user?.id) {
-      toast({
-        title: "Please login to add items to cart",
-        variant: "destructive",
-      });
-      setOpen(false);
-      navigate("/auth/login");
-      return;
-    }
+    const currentUserId = user?.id || getGuestId();
 
     let getCartItems = cartItems?.items || [];
 
@@ -61,13 +54,13 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
     }
     dispatch(
       addToCart({
-        userId: user?.id,
+        userId: currentUserId,
         productId: getCurrentProductId,
         quantity: 1,
       })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
+        dispatch(fetchCartItems(currentUserId));
         toast({
           title: "Product is added to cart",
         });
